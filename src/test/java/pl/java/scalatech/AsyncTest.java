@@ -10,6 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import lombok.extern.slf4j.Slf4j;
+import rx.Observable;
+
 
 @Slf4j
 @ContextConfiguration({"classpath:jmsConfigTest.xml"})
@@ -27,8 +29,6 @@ public class AsyncTest extends CamelTestSupport {
        
         
     }
-
- 
 
 
 }

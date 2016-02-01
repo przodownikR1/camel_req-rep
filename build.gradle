@@ -46,6 +46,8 @@ ext {
 
 
 dependencies {
+    compile 'io.reactivex:rxjava:1.1.0'
+    
     compile ("org.springframework:spring-core:${springVersion}")
     compile ("org.springframework:spring-beans:${springVersion}")
     compile ("org.springframework:spring-context:${springVersion}")
