@@ -4,9 +4,31 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+*.log
+outbox
+
+outbox
+workaround/
+outcome/
+
+
+.gradle
+.project
+.classpath
+.settings
+bin
+build
+.error
+
+
+z1.xml
+z2.xml
+z3.xml
+/gc.log.0.current
+*.iml
+.idea

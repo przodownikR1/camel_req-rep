@@ -1,0 +1,25 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jaxws="http://cxf.apache.org/jaxws"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <context:property-placeholder location="file:./config/ccp.properties"/>
+
+    
+             
+   <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory">
+     <property name="targetConnectionFactory">
+         <bean  class="org.apache.activemq.ActiveMQConnectionFactory" p:brokerURL="vm://localhost?broker.persistent=false"/>  
+         <!-- vm://localhost?broker.persistent=false-->   <!-- tcp://localhost:61616-->
+     </property>
+   </bean>
+       
+   <bean id="jms" class="org.apache.camel.component.jms.JmsComponent" p:connectionFactory-ref="jmsConnectionFactory" p:useMessageIDAsCorrelationID="true" p:concurrentConsumers="1" p:maxConcurrentConsumers="5"/>
+   
+        
+</beans>

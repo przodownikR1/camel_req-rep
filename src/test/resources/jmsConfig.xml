@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:jaxws="http://cxf.apache.org/jaxws"
+  xmlns:camel="http://camel.apache.org/schema/spring"
+         xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+        
+   <bean  id="targetConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" p:brokerURL="tcp://localhost:61616"/>
+             
+   <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory" p:targetConnectionFactory-ref="targetConnectionFactory" />
+       
+   <bean id="jms" class="org.apache.camel.component.jms.JmsComponent" p:connectionFactory-ref="jmsConnectionFactory" p:useMessageIDAsCorrelationID="true"/>
+    
+        
+</beans>
