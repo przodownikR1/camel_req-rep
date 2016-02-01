@@ -14,7 +14,7 @@
     <camel:camelContext id="camelContext" trace="true" useMDCLogging="true">
         <camel:route id="in">
             <camel:from  uri="seda:test"/>
-             <camel:log loggingLevel="INFO" logName="camel" message="+++   send message to queue =>  ${body}"/> 
+             <camel:log loggingLevel="INFO" logName="ccpCamel" message="+++   send message to queue =>  ${body}"/> 
              <camel:setHeader headerName="JMSCorrelationID"><camel:constant>przodownik</camel:constant></camel:setHeader>
             <camel:inOut uri="jms://queue:testService?replyTo=Q2&amp;useMessageIDAsCorrelationID=true&amp;jmsMessageType=Text" />
            
@@ -22,7 +22,7 @@
        
         <camel:route id="out">
             <camel:from uri="jms://queue:testService?concurrentConsumers=1&amp;useMessageIDAsCorrelationID=true&amp;replyTo=Q2"/>
-            <camel:log loggingLevel="INFO" logName="camel" message="++++  get message from queue => ${header.JMSReplyTo}  ${header.JMSCorrelationID} ${header.JMSDestination}"/>  
+            <camel:log loggingLevel="INFO" logName="ccpCamel" message="++++  get message from queue => ${header.JMSReplyTo}  ${header.JMSCorrelationID} ${header.JMSDestination}"/>  
             <camel:to uri="seda:out"/>
         </camel:route>      
     </camel:camelContext>

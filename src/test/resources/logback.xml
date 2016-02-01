@@ -22,12 +22,12 @@
 	</appender>
 	
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>ccpMicroservice.log</file>
+		<file>camelRR.log</file>
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
         </filter>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>ccpMicroservice.%d{yyyyMMdd}.log
+            <fileNamePattern>camelRR.%d{yyyyMMdd}.log
             </fileNamePattern>
         </rollingPolicy>
 		<append>false</append>
@@ -44,37 +44,12 @@
       
       
      
-  <appender name="SMTP" class="ch.qos.logback.classic.net.SMTPAppender">
-    <layout class="ch.qos.logback.classic.html.HTMLLayout">
-      <pattern>%date%level%thread%logger%msg</pattern>
-      <throwableRenderer class="ch.qos.logback.classic.html.DefaultThrowableRenderer" />      
-    </layout>
-    
-    <from>przodownikR1@gmail.com</from>
-    <smtpHost>smtp.gmail.com</smtpHost>
-    <!--
-     <smtpPort>587</smtpPort>
-     <STARTTLS>true</STARTTLS>
-    -->
-    <smtpPort>465</smtpPort>
-    <SSL>true</SSL>
-    <username>przodownikR1@gmail.com</username>
-    <password></password>
-    <subject>CCP CONNECTOR ERROR : %logger{20} - %m</subject>
-    <to>slawek.borowiec@riscosoftware.pl</to>
-    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-      <level>ERROR</level>
-    </filter>
-    <cyclicBufferTracker class="ch.qos.logback.core.spi.CyclicBufferTracker">
-      <bufferSize>1</bufferSize>
-    </cyclicBufferTracker>
-    
-  </appender>
+  
 
 	<logger name="pl.java.riscosoftware" level="info" />
 	<logger name="org.springframework" level="warn" />
-	<logger name="ccpCamel" level="info"  />
-	<logger name="ccpCamelError" level="error"  />
+	<logger name="camel" level="info"  />
+	<logger name="camelError" level="error"  />
     <logger name="org.apache.camel" level="info" />
     <logger name="org.apache.cxf" level="warn" />
     <logger name="org.springframework.data" level="warn" />
@@ -83,7 +58,6 @@
      <level value="OFF" />
      <appender-ref ref="console" />
     <appender-ref ref="FILE" /> 
-     <!-- <appender-ref ref="SMTP" /> -->
    </root>
    
 </configuration>
