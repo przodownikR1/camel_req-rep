@@ -1,9 +1,12 @@
 package pl.java.scalatech;
 
+import static com.jayway.awaitility.Awaitility.await;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.Matchers.equalTo;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ConsumerTemplate;
@@ -15,8 +18,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.jayway.awaitility.Awaitility;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,21 +40,18 @@ public class AsyncTest{
           Assertions.assertThat(producer).isNotNull();
           producer.sendBody("seda:in", "sdd");
        
-       
-         Awaitility.await().atMost(2, TimeUnit.SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(true));
+         await().atMost(2, SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(TRUE));
 
     }
 
     private Callable<Boolean> untilCheckEndpoint(ConsumerTemplate ct, String endpoint) {
-        return new Callable<Boolean>() {
-            public Boolean call() throws Exception {
-                Exchange ex = ct.receive(endpoint);
-                log.info("retrieve message ---->  {}",ex);
-                if (ex != null) {
-                    return Boolean.TRUE;
-                }
-                return Boolean.FALSE;
+        return () -> {
+            Exchange ex = ct.receive(endpoint);
+            log.info("retrieve message ---->  {}",ex.getIn().getBody());
+            if (ex != null) {
+                return TRUE;
             }
+            return FALSE;
         };
     }
 
