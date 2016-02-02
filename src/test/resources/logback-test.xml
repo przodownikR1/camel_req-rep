@@ -3,17 +3,18 @@
 	<property scope="context" name="pattern_stdout"
 		value="%highlight(%.-5level)|%green(%date{yyyy-MM-dd HH:mm:ss.SSS})|%boldMagenta([%thread])|%yellow(%logger{70}:%boldYellow(%line)) - %msg%n%red(%rEx)" />
 	<property scope="context" name="pattern_log" value="%-4relative [%thread] %-5level %logger{35} - %msg %n"/>
+	
+	
 	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
 	<timestamp key="bySecond" datePattern="yyyyMMdd"/>
-	
 		<resetJUL>true</resetJUL>
 	</contextListener>
 	
 	<consolePlugin />
 	<jmxConfigurator />
-	<withJansi>false</withJansi>
+	<!-- <withJansi>true</withJansi> -->
 	
-	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender" >
 		<encoder>
 			<charset>utf-8</charset>
 			<pattern>${pattern_log}</pattern>
@@ -46,7 +47,7 @@
      
   
 
-	<logger name="pl.java.riscosoftware" level="info" />
+	<logger name="pl.java.scalatech" level="info" />
 	<logger name="org.springframework" level="warn" />
 	<logger name="camel" level="info"  />
 	<logger name="camelError" level="error"  />

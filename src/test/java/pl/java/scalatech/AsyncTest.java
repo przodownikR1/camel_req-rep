@@ -1,7 +1,5 @@
 package pl.java.scalatech;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.EndpointInject;
 import org.apache.camel.ProducerTemplate;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Test;
@@ -10,7 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import lombok.extern.slf4j.Slf4j;
-import rx.Observable;
 
 
 @Slf4j
@@ -29,6 +26,5 @@ public class AsyncTest extends CamelTestSupport {
        
         
     }
-
 
 }
