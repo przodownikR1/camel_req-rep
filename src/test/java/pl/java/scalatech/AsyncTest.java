@@ -30,16 +30,14 @@ public class AsyncTest{
     @Autowired
     private ConsumerTemplate consumer;
     @Autowired
-    private ProducerTemplate producer;
-    
+    private ProducerTemplate producer; 
+   
     @Test
     public void testActiveMQ() throws Exception {
           Assertions.assertThat(context).isNotNull();
-      
-   
           Assertions.assertThat(consumer).isNotNull();
           Assertions.assertThat(producer).isNotNull();
-          producer.sendBody("direct:in", "SDSDSDSDSD");
+          producer.sendBody("seda:in", "sdd");
        
        
          Awaitility.await().atMost(2, TimeUnit.SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(true));

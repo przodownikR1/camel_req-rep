@@ -12,9 +12,9 @@
 		<camel:template id="producer" camelContextId="camelContext" />
 
 		<camel:route id="in">
-			<camel:from uri="direct:in" />
+		    <camel:from uri="seda:in"/>
 			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to queue =>  ${body}" />
-			<camel:inOnly uri="jms://queue:slawek" />
+			<camel:to uri="jms://queue:slawek" />
 		</camel:route>
 		
 		<camel:route id="out">
