@@ -1,30 +1,29 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:jaxws="http://cxf.apache.org/jaxws"
-       xmlns:camel="http://camel.apache.org/schema/spring"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-    
-    <import resource="classpath:jmsConfig.xml"/>
 
+	<import resource="classpath:jmsConfig.xml" />
+	<camel:camelContext id="camelContext" trace="true" useMDCLogging="true">
+		<camel:consumerTemplate id="consumer" camelContextId="camelContext" />
+		<camel:template id="producer" camelContextId="camelContext" />
+
+		<camel:route id="in">
+			<camel:from uri="direct:in" />
+			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to queue =>  ${body}" />
+			<camel:inOnly uri="jms://queue:slawek" />
+		</camel:route>
+		
+		<camel:route id="out">
+			<camel:from uri="jms://queue:slawek" />
+			<camel:log loggingLevel="INFO" logName="camel"  message="++++  get message from queue => ${body} " />
+			<camel:to uri="seda:out" />
+		</camel:route>
+	</camel:camelContext>
+
+</beans>
   
-    <camel:camelContext id="camelContext" trace="true" useMDCLogging="true">
-        <camel:route id="in">
-            <camel:from  uri="seda:test"/>
-             <camel:log loggingLevel="INFO" logName="camel" message="+++   send message to queue =>  ${body}"/> 
-             <camel:setHeader headerName="JMSCorrelationID"><camel:constant>przodownik</camel:constant></camel:setHeader>
-            <camel:inOut uri="jms://queue:testService?replyTo=Q2&amp;useMessageIDAsCorrelationID=true&amp;jmsMessageType=Text" />
-           
-        </camel:route> 
-       
-        <camel:route id="out">
-            <camel:from uri="jms://queue:testService?concurrentConsumers=1&amp;useMessageIDAsCorrelationID=true&amp;replyTo=Q2"/>
-            <camel:log loggingLevel="INFO" logName="camel" message="++++  get message from queue => ${header.JMSReplyTo}  ${header.JMSCorrelationID} ${header.JMSDestination}"/>  
-            <camel:to uri="seda:out"/>
-        </camel:route>      
-    </camel:camelContext>
-    
-  </beans>
+ 
