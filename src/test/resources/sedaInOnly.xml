@@ -1,0 +1,29 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:camel="http://camel.apache.org/schema/spring" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+        
+    <bean id="reverse" class="pl.java.scalatech.Worker"/>  
+      
+	<camel:camelContext id="camelContext" trace="false" useMDCLogging="true">
+		<camel:consumerTemplate id="consumer" camelContextId="camelContext" />
+		<camel:template id="producer" camelContextId="camelContext" />
+
+		<camel:route id="inRoute">
+		    <camel:from uri="seda:in"/>
+			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to seda  inRoute =>  ${body}" />
+			<camel:inOnly uri="seda:join"/>
+		</camel:route>
+		
+		
+		<camel:route id="convertRoute">
+		    <camel:from uri="seda:join"/>
+			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to sede convertRoute =>  ${body}" />
+			<camel:bean ref="reverse"/>
+		</camel:route>
+		
+	</camel:camelContext>
+
+</beans>

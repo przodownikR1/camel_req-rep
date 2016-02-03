@@ -27,4 +27,6 @@ public class HelloWorldRouteBuilderTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new HelloWorldRouteBuilder();
     }
+    
+   
 }

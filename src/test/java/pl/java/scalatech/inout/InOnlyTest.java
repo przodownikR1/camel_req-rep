@@ -1,17 +1,7 @@
-package pl.java.scalatech;
-
-import static com.jayway.awaitility.Awaitility.await;
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static java.util.concurrent.TimeUnit.SECONDS;
-import static org.hamcrest.Matchers.equalTo;
-import static pl.java.scalatech.Utils.untilCheckEndpoint;
-
-import java.util.concurrent.Callable;
+package pl.java.scalatech.inout;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.ConsumerTemplate;
-import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -23,10 +13,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ContextConfiguration({ "classpath:jmsConfigTest.xml" })
+@ContextConfiguration({ "classpath:sedaInOut.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
-public class AsyncTest {
-
+public class InOnlyTest {
+    private final String NAME = "slawek borowiec";
+    private final String NAME_RESULT = "slawek borowiec";
+    
     @Autowired
     private CamelContext context;
     @Autowired
@@ -35,14 +27,16 @@ public class AsyncTest {
     private ProducerTemplate producer;
 
     @Test
-    public void testActiveMQ() throws Exception {
+    public void should_return_the_same_string_as_put_in_start_route() throws Exception {
+         
+   
         Assertions.assertThat(context).isNotNull();
         Assertions.assertThat(consumer).isNotNull();
         Assertions.assertThat(producer).isNotNull();
-        producer.sendBody("seda:in", "sdd");
+        String result = producer.requestBody("seda:in", NAME,String.class);
+        Assertions.assertThat(result).isEqualTo(NAME_RESULT);
 
-        await().atMost(2, SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(TRUE));
+        //await().atMost(2, SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(TRUE));
 
     }
-
 }
