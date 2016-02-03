@@ -5,26 +5,26 @@
         http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
         
-    <bean id="reverse" class="pl.java.scalatech.Worker"/>  
+    <bean id="reverse" class="pl.java.scalatech.LongRunningTask"/>  
       
-	<camel:camelContext id="camelContext" trace="false" useMDCLogging="true">
+	<camel:camelContext id="camelContext" trace="false" useBreadcrumb="false" useMDCLogging="true">
+	    <camel:propertyPlaceholder id="properties" location="classpath:test.properties" />
 		<camel:consumerTemplate id="consumer" camelContextId="camelContext" />
 		<camel:template id="producer" camelContextId="camelContext" />
+		
 
 		<camel:route id="inRoute">
 		    <camel:from uri="seda:in"/>
-			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to seda  inRoute =>  ${body}" />
-			<camel:to uri="seda:join"/>
+			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to seda  inRoute =>  ${body} -> ${headers}" />
+			<camel:to uri="seda:longRunning"/>
 		</camel:route>
-		
-		
-		<camel:route id="convertRoute">
-		    <camel:from uri="seda:join"/>
-			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to sede convertRoute =>  ${body}" />
-			<camel:bean ref="reverse"/>
-		
-		</camel:route>
-		
-	</camel:camelContext>
+
+		<camel:route>
+		<camel:from uri="seda:{{join.longRunning}}"/>
+		   <camel:bean ref="reverse"/> 
+		   <camel:log loggingLevel="INFO" logName="camel" message="+++ out  send message to seda  inRoute =>  ${body} -> ${headers}" />
+		   <camel:to uri="properties:{{end.long.running.test}}"/>
+		 </camel:route>
+</camel:camelContext>
 
 </beans>

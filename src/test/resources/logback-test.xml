@@ -2,7 +2,7 @@
 <configuration>
 	<property scope="context" name="pattern_stdout"
 		value="%highlight(%.-5level)|%green(%date{yyyy-MM-dd HH:mm:ss.SSS})|%boldMagenta([%thread])|%yellow(%logger{70}:%boldYellow(%line)) - %msg%n%red(%rEx)" />
-	<property scope="context" name="pattern_log" value="%-4relative [%thread] %-5level %logger{35} - %msg %n"/>
+	<property scope="context" name="pattern_log" value="%d [%-15.15t] %-5p %-30.30c{1} - %-10.10X{camel.exchangeId} - %-10.10X{camel.routeId} - %m%n"/>
 	
 	
 	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">

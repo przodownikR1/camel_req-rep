@@ -53,6 +53,7 @@ dependencies {
     compile ("org.springframework:spring-context:${springVersion}")
     compile 'org.apache.camel:camel-core:2.16.1'
     compile "org.apache.camel:camel-jms:2.16.1"
+    compile "org.apache.camel:camel-sjms:2.16.1"
     compile("org.apache.activemq:activemq-client")
     compile("org.apache.activemq:activemq-camel:5.13.0")    
     compile 'org.projectlombok:lombok:1.16.4'
@@ -62,7 +63,7 @@ dependencies {
     testCompile 'com.jayway.awaitility:awaitility-java8:1.6.1'
     testCompile 'com.jayway.awaitility:awaitility:1.6.1'   
     testCompile 'org.springframework:spring-test:4.2.2.RELEASE'
-    runtime 'com.h2database:h2'
+    
     
     
     compile("org.slf4j:slf4j-api:$slf4jVersion")

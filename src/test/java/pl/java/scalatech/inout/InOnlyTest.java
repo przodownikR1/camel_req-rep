@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ContextConfiguration({ "classpath:sedaInOut.xml" })
+@ContextConfiguration({ "classpath:sedaInOnly.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class InOnlyTest {
     private final String NAME = "slawek borowiec";

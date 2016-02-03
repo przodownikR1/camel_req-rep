@@ -24,7 +24,7 @@ import pl.java.scalatech.Utils;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class InOutTest {
     private final String NAME = "slawek borowiec";
-    private final String NAME_RESULT = "slawek borowiec";
+    private final String NAME_RESULT = "ceiworob kewals";
     @Autowired
     private CamelContext context;
     @Autowired
@@ -39,8 +39,6 @@ public class InOutTest {
         Assertions.assertThat(producer).isNotNull();
         String result = producer.requestBody("seda:in", NAME,String.class);
         Assertions.assertThat(result).isEqualTo(NAME_RESULT);
-
-        //await().atMost(2, SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(TRUE));
 
     }
 

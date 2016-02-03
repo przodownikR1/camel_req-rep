@@ -1,17 +1,13 @@
 package pl.java.scalatech;
 
 import static com.jayway.awaitility.Awaitility.await;
-import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.hamcrest.Matchers.equalTo;
 import static pl.java.scalatech.Utils.untilCheckEndpoint;
 
-import java.util.concurrent.Callable;
-
 import org.apache.camel.CamelContext;
 import org.apache.camel.ConsumerTemplate;
-import org.apache.camel.Exchange;
 import org.apache.camel.ProducerTemplate;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
