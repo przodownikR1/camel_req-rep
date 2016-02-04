@@ -8,6 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.verify;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import pl.java.scalatech.component.Counter;
 import pl.java.scalatech.jms.MessageConsumer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doAnswer;
@@ -29,10 +31,15 @@ import static org.mockito.Mockito.doAnswer;
 @ContextConfiguration({ "classpath:springConfig.xml" })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SpringMessageTest {
-    @Mock
+    
+    @InjectMocks
     MessageConsumer messageConsumerMock;
     @Mock
     private JmsTemplate jmsTemplate;
+    @Autowired
+    private JmsTemplate template;
+    @Mock
+    private Counter counter;
 
     @Before
     public void init() {
@@ -55,6 +62,10 @@ public class SpringMessageTest {
         verify(jmsTemplate).convertAndSend(Mockito.eq("queueA"), Mockito.any(Message.class));
         //Mockito.verify(messageConsumerMock).onMessage(Mockito.any(Message.class));
 
+    }
+    @Test
+    public void withoutMockTest(){
+        
     }
 
 }
