@@ -19,7 +19,7 @@ public class MessageConsumer implements MessageListener{
     public void onMessage(Message message) {
              counter.getCountMessage().incrementAndGet();
              try {
-                log.info("{}",((TextMessage)message).getText());
+                log.info("-- consumer --- {}",((TextMessage)message).getText());
             } catch (JMSException e) {
              
             }

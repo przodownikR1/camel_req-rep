@@ -12,6 +12,7 @@ import org.apache.camel.component.mock.MockEndpoint;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import lombok.SneakyThrows;
@@ -40,6 +41,7 @@ public class LongRunningTaskTest extends CamelHelperTest {
     }
     
     @Test
+   
     public void should_long_running_task_work() throws Exception {        
         List<String> result = Lists.newArrayList("1olleH","2olleH","3olleH","4olleH","5olleH"); 
         out.expectedBodiesReceivedInAnyOrder(result);

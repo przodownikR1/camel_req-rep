@@ -63,6 +63,7 @@ dependencies {
     testCompile 'com.jayway.awaitility:awaitility-java8:1.6.1'
     testCompile 'com.jayway.awaitility:awaitility:1.6.1'   
     testCompile 'org.springframework:spring-test:4.2.2.RELEASE'
+    testCompile 'org.mockito:mockito-all:1+'
     
     
     

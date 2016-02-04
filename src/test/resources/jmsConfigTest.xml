@@ -14,7 +14,7 @@
 		<camel:route id="in">
 		    <camel:from uri="seda:in"/>
 			<camel:log loggingLevel="INFO" logName="camel" message="+++  send message to queue =>  ${body}" />
-			<camel:to uri="jms://queue:slawek" />
+			<camel:inOnly uri="jms://queue:slawek" />
 		</camel:route>
 		
 		<camel:route id="out">

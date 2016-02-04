@@ -31,13 +31,13 @@ public class AsyncTest {
     private ProducerTemplate producer;
 
     @Test
-    public void testActiveMQ() throws Exception {
+    public void shouldPutAndGetMessageFromJms() throws Exception {
         Assertions.assertThat(context).isNotNull();
         Assertions.assertThat(consumer).isNotNull();
         Assertions.assertThat(producer).isNotNull();
         producer.sendBody("seda:in", "sdd");
 
-        await().atMost(2, SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(TRUE));
+        await().atMost(1, SECONDS).until(untilCheckEndpoint(consumer, "seda:out"), equalTo(TRUE));
 
     }
 
