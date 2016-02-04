@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+         xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:p="http://www.springframework.org/schema/p"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xmlns:amq="http://activemq.apache.org/schema/core"
+    	xmlns:jms="http://www.springframework.org/schema/jms"
+        xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+         http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+		http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+			
+			
+   <bean id="counter" class="pl.java.scalatech.component.Counter"/>
+	
+	<bean  id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory" p:brokerURL="tcp://localhost:61616"/>
+             
+   <bean id="jmsConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory" p:targetConnectionFactory-ref="connectionFactory" />
+       
+   <bean id="jms" class="org.apache.camel.component.jms.JmsComponent" p:connectionFactory-ref="jmsConnectionFactory" p:useMessageIDAsCorrelationID="true"/>
+	
+       
+    <amq:queue id="queueA" physicalName="queueA" />
+	
+    <bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate" p:connectionFactory-ref="jmsConnectionFactory"  p:defaultDestination-ref="queueA"  />
+
+    <bean id="messageListener" class="pl.java.scalatech.jms.MessageConsumer"/>
+   
+    <jms:listener-container concurrency="2">
+        <jms:listener ref="messageListener"  destination="queueA"  />    
+    </jms:listener-container>
+ 
+
+ </beans>

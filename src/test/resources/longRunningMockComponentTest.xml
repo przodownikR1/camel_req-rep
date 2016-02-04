@@ -20,7 +20,7 @@
 		</camel:route>
 
 		<camel:route>
-		<camel:from uri="seda:{{join.longRunning}}?concurrentConsumers=15"/>
+		<camel:from uri="seda:{{join.longRunning}}?concurrentConsumers=5"/>
 		   <camel:to uri="mock:myMock"/>
 		   <camel:bean ref="reverse"/> 
 		   <camel:log loggingLevel="INFO" logName="camel" message="+++ out  send message to seda  inRoute =>  ${body} -> ${headers}" />
