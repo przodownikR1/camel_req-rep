@@ -6,14 +6,32 @@ import javax.jms.ConnectionFactory;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.camel.CamelContext;
+import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.processor.interceptor.DefaultTraceFormatter;
+import org.apache.camel.processor.interceptor.Tracer;
 import org.apache.camel.test.junit4.CamelTestSupport;
 import org.junit.Test;
 
 public class RequestReplyJmsTest extends CamelTestSupport {
 
     protected CamelContext createCamelContext() throws Exception {
+        
         CamelContext camelContext = super.createCamelContext();
+        Tracer tracer = new Tracer();
+        tracer.setTraceExceptions(true);
+        tracer.setTraceInterceptors(true);
+        tracer.setLogLevel(LoggingLevel.TRACE);
+        tracer.setLogName("camel");
+        camelContext.setTracing(true);
+        DefaultTraceFormatter tf= new DefaultTraceFormatter();
+        tf.setShowHeaders(true);
+        tf.setShowBody(true);
+        tf.setShowOutBody(true);
+        tf.setShowOutHeaders(true);
+        ;
+        
+       
 
         ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         camelContext.addComponent("jms", jmsComponentClientAcknowledge(connectionFactory));
@@ -26,7 +44,8 @@ public class RequestReplyJmsTest extends CamelTestSupport {
 
             @Override
             public void configure() throws Exception {
-                from("seda:test").inOut("jms:incomingOrders?useMessageIDAsCorrelationID=true&replyTo=validate");
+                from("jms:incomingOrders?replyTo=validate").inOut("jms:validate"); 
+               
                 from("jms:validate").bean(ValidatorBean.class);
             }
         };
@@ -34,7 +53,7 @@ public class RequestReplyJmsTest extends CamelTestSupport {
 
     @Test
     public void testClientGetsReply() throws Exception {
-        Object requestBody = template.requestBody("seda:test", "<order name=\"motor\" amount=\"1\" customer=\"honda\"/>");
+        Object requestBody = template.requestBody("jms:incomingOrders", "<order name=\"motor\" amount=\"1\" customer=\"honda\"/>");
         assertEquals("Valid", requestBody);
     }
 
