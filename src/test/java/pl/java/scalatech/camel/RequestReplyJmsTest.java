@@ -15,9 +15,15 @@ import org.junit.Test;
 
 public class RequestReplyJmsTest extends CamelTestSupport {
 
-    protected CamelContext createCamelContext() throws Exception {
-        
+    protected CamelContext createCamelContext() throws Exception {        
         CamelContext camelContext = super.createCamelContext();
+        tracerSettings(camelContext);            
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+        camelContext.addComponent("jms", jmsComponentClientAcknowledge(connectionFactory));
+        return camelContext;
+    }
+
+    private void tracerSettings(CamelContext camelContext) {
         Tracer tracer = new Tracer();
         tracer.setTraceExceptions(true);
         tracer.setTraceInterceptors(true);
@@ -29,14 +35,6 @@ public class RequestReplyJmsTest extends CamelTestSupport {
         tf.setShowBody(true);
         tf.setShowOutBody(true);
         tf.setShowOutHeaders(true);
-        ;
-        
-       
-
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
-        camelContext.addComponent("jms", jmsComponentClientAcknowledge(connectionFactory));
-
-        return camelContext;
     }
 
     protected RouteBuilder createRouteBuilder() throws Exception {
@@ -44,8 +42,7 @@ public class RequestReplyJmsTest extends CamelTestSupport {
 
             @Override
             public void configure() throws Exception {
-                from("jms:incomingOrders?replyTo=validate").inOut("jms:validate"); 
-               
+                from("jms:incomingOrders").inOut("jms:validate");        
                 from("jms:validate").bean(ValidatorBean.class);
             }
         };
